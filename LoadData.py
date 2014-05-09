@@ -27,4 +27,7 @@ df_tmp['countyid'] = df_tmp['tractid'].map(lambda x: str(x)[0:5]);
 # Use the countyid derived above to join again counties data file
 df_merged  = pd.merge(df_tmp, df_counties, on='countyid', how='inner').dropna();
 
+# Save the merged data frame to csv
+df_merged.to_csv('datasets/merged_file.csv', ',');
+
 
