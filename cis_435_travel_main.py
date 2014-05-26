@@ -1,4 +1,6 @@
 import pandas as pd  # pandas for data frame operations
+import pca as pca
+import gmm as gmm
 
 # Load NHTS detail file
 nhts = pd.read_csv('NHTS_2009_transfer_US.txt', '\t', dtype = {'tractid':str});
@@ -33,6 +35,13 @@ df_merged_tmp  = pd.merge(df_nhts_agg, df_counties, on='countyid', how='inner')
 
 # Create the final dataframe that will only have relevant features and will
 # be the input datastructure for building the model
-df_final = df_merged_tmp[['countyid', 'pop10', 'hu10', 'aland', 'awater', 'aland_sqmi', 'awater_sqmi', 'statepop', 'statearea', '%pop', '%area', 'est_pmiles2007_11', 'est_ptrp2007_11', 'est_vmiles2007_11', 'est_vtrp2007_11', 'median_hh_inc2007_11', 'mean_hh_veh2007_11', 'mean_hh_mem2007_11', 'pct_owner2007_11', 'mean_hh_worker2007_11', 'pct_lchd2007_11', 'pct_lhd12007_11', 'pct_lhd22007_11', 'pct_lhd42007_11']]
+df_final = df_merged_tmp[['usps', 'name', 'countyid', 'pop10', 'hu10', 'aland', 'awater', 'aland_sqmi', 'awater_sqmi', 'statepop', 'statearea', 'perc_pop', 'perc_area', 'est_pmiles2007_11', 'est_ptrp2007_11', 'est_vmiles2007_11', 'est_vtrp2007_11', 'median_hh_inc2007_11', 'mean_hh_veh2007_11', 'mean_hh_mem2007_11', 'pct_owner2007_11', 'mean_hh_worker2007_11', 'pct_lchd2007_11', 'pct_lhd12007_11', 'pct_lhd22007_11', 'pct_lhd42007_11']]
 
-
+# Execute the gaussian mixture cluster model
+# get the silhouette score and a data frame of all counties that belong to 
+# the same cluster as McLean county
+df_countyCluster, score = gmm.buildGmmClusterModel(
+                            df_final, 
+                            clusterComp=6,
+                            type=0
+                          )
