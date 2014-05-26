@@ -140,7 +140,7 @@ def buildGmmClusterModel(
     # if score is close to 0, then there are a number of overlapping clusters
     # if socre is close to -1, then there is incorrect clustering - undesired
     # mahalanohis distance is the chosen metric to measure cluster efficiency
-    score = silhouette_score(X, y, metric='euclidean')
+    score = silhouette_score(X, y, metric='mahalanohis')
     
     # Return appropriate variables back to the calling API for further processing
     return df_countyCluster, score
