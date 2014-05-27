@@ -127,7 +127,7 @@ def buildKmeansppClusterModel(
     
     # Output the results of gaussian mixture model and the labels identified
     # to a local file for further analysis/debugging, if needed
-    df_nhtsagg.to_csv('k_means_plusplus_output.csv', ',')
+    df_nhtsagg.to_csv('k_means_pp_output.csv', ',')
 
     # If pca is enabled, perform PCA on trainingData
     if (pcaFlag) :
