@@ -47,7 +47,7 @@ def buildGmmClusterModel(
     
     # Extract and save relevant features from trainingData and store in local
     # numpy arrays    
-    # Refer to the data dictinary for details of what each feature means
+    # Refer to the data dictionary for details of what each feature means
     pop10 = np.array(df_nhtsagg['pop10'])
     hu10 = np.array(df_nhtsagg['hu10'])
     aland = np.array(df_nhtsagg['aland'])
@@ -103,7 +103,7 @@ def buildGmmClusterModel(
     # one unit of variance and no single feature dominates the clustering process
     X = StandardScaler().fit_transform(X_train)
 
-    # Execute the gaussign mixture model using following parameters
+    # Execute the gaussian mixture model using following parameters
     # n_components: number of components/clusters to be identified
     # covariance_type: covariance type can be - ‘spherical’, ‘tied’, ‘diag’, ‘full’
     # n_iter: is number of EM iterations to be performed
@@ -115,17 +115,17 @@ def buildGmmClusterModel(
     # As this is an unsupervised clustering methodology, we'll not employ train-test
     # validation procedure for building the clusters
     # Instead, we'll use the same dataset that was used for fitting the model
-    # for classifying it and identifing the labels/clusters
+    # for classifying it and identifying the labels/clusters
     y = clf.predict(X)
     
     # Add the cluster labels to input data frame
     df_nhtsagg['label'] = y.tolist()
      
     # For McLean county (17113) return a data frame that has all counties
-    # that belong to the same cluster as McLean county
+    # that belong to the same cluster as McLean county, IL
     df_countyCluster = getCountyDf(df_nhtsagg, '17113')
     
-    # Output the results of gaussign mixture model and the labels identified
+    # Output the results of gaussian mixture model and the labels identified
     # to a local file for further analysis/debugging, if needed
     df_nhtsagg.to_csv('gmm_output.csv', ',')
 
@@ -140,7 +140,7 @@ def buildGmmClusterModel(
     # if score is close to 0, then there are a number of overlapping clusters
     # if socre is close to -1, then there is incorrect clustering - undesired
     # mahalanohis distance is the chosen metric to measure cluster efficiency
-    score = silhouette_score(X, y, metric='mahalanohis')
+    score = silhouette_score(X, y, metric='mahalanobis')
     
     # Return appropriate variables back to the calling API for further processing
     return df_countyCluster, score
