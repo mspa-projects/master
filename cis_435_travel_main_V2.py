@@ -1,6 +1,8 @@
 import pandas as pd  # pandas for data frame operations
 #import pca as pca
 import gmm as gmm
+import k_means_pp as kmpp
+import k_means_random as kmr
 import warnings
 
 # turn DeprecationWarnings off
@@ -65,11 +67,34 @@ gmm_countyCluster, score = gmm.buildGmmClusterModel(
 print '\n\nSilhouette Coefficient For Gaussian Mixture Model: ', score
 #print df_countyCluster.shape
 
+# Execute the K-means++ cluster model
+# get the silhouette score and a data frame of all counties that belong to 
+# the same cluster as McLean county
+kmpp_countyCluster, score = kmpp.buildKmeansppClusterModel(
+                            df_final, 
+                            clusterComp=6,
+                            type=0
+                          )
+print '\n\nSilhouette Coefficient For K-means++ Model: ', score
+
+# Execute the K-means (random) cluster model
+# get the silhouette score and a data frame of all counties that belong to 
+# the same cluster as McLean county
+kmr_countyCluster, score = kmr.buildKmeansRandomModel(
+                            df_final, 
+                            clusterComp=6,
+                            type=0
+                          )
+print '\n\nSilhouette Coefficient For K-means (random) Model: ', score
+
+
 #Get basic summary statistics for the main dataframe
 print '\n\nFull Dataframe Summary\n',79*'=','\n', df_final.describe()
 
 #Get basic summary statistics for the cluster of interest
-print '\n\nMcLean County Cluster\n', gmm_countyCluster.describe()
+print '\n\nMcLean County Cluster (Gaussian Mixture Model)\n', gmm_countyCluster.describe()
+print '\n\nMcLean County Cluster (K-means++ Model)\n', kmpp_countyCluster.describe()
+print '\n\nMcLean County Cluster (K-means++ random Mixture Model)\n', kmr_countyCluster.describe()
 
 df_il = df_final[df_final['usps'] == 'IL']
 
