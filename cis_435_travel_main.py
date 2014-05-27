@@ -3,6 +3,7 @@ import pandas as pd  # pandas for data frame operations
 import gmm as gmm
 import k_means_pp as kmpp
 import k_means_random as kmr
+import ward as wrd
 import warnings
 
 # turn DeprecationWarnings off
@@ -87,6 +88,15 @@ kmr_countyCluster, score = kmr.buildKmeansRandomModel(
                           )
 print '\n\nSilhouette Coefficient For K-means (random) Model: ', score
 
+# Execute the Hierarchical (ward) cluster model
+# get the silhouette score and a data frame of all counties that belong to 
+# the same cluster as McLean county
+ward_countyCluster, score = wrd.buildWardModel(
+                            df_final, 
+                            clusterComp=6,
+                            type=0
+                          )
+print '\n\nSilhouette Coefficient For Ward Model: ', score
 
 #Get basic summary statistics for the main dataframe
 print '\n\nFull Dataframe Summary\n',79*'=','\n', df_final.describe()
@@ -94,7 +104,8 @@ print '\n\nFull Dataframe Summary\n',79*'=','\n', df_final.describe()
 #Get basic summary statistics for the cluster of interest
 print '\n\nMcLean County Cluster (Gaussian Mixture Model)\n', gmm_countyCluster.describe()
 print '\n\nMcLean County Cluster (K-means++ Model)\n', kmpp_countyCluster.describe()
-print '\n\nMcLean County Cluster (K-means++ random Mixture Model)\n', kmr_countyCluster.describe()
+print '\n\nMcLean County Cluster (K-means random Mixture Model)\n', kmr_countyCluster.describe()
+print '\n\nMcLean County Cluster (Ward Model)\n', ward_countyCluster.describe()
 
 df_il = df_final[df_final['usps'] == 'IL']
 
